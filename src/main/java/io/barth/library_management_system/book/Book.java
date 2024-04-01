@@ -1,15 +1,18 @@
 package io.barth.library_management_system.book;
 
 import io.barth.library_management_system.utility.ISBN;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
+//@EntityListeners(AuditingEntityListener.class)
 public class Book {
 
     @Id
@@ -26,5 +29,13 @@ public class Book {
 
     @ISBN
     private String isbn;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    @Column(insertable = false)
+    private LocalDateTime lastModified;
 
 }
