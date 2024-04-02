@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-//@EntityListeners(AuditingEntityListener.class)
 public class Book {
 
     @Id
