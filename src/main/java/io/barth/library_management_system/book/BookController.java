@@ -1,5 +1,7 @@
 package io.barth.library_management_system.book;
 
+import io.barth.library_management_system.exception.EntityNotFoundException;
+import io.barth.library_management_system.exception.InternalServerErrorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,10 +36,16 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBook(@PathVariable Long id){
-        return bookServiceImp.getBookById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Book> getBookById(@PathVariable Long id) {
+
+        try { Book book = bookServiceImp.getBookById(id);
+            return new ResponseEntity<>(book, HttpStatus.OK);
+        } catch (EntityNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (InternalServerErrorException ex) {
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); }
+
     }
 
     @DeleteMapping("/{id}")

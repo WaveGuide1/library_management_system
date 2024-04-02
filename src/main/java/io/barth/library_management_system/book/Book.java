@@ -24,7 +24,7 @@ public class Book {
     @NotBlank(message = "Book must have an Author")
     private String author;
 
-    private int publicationYear;
+    private Integer publicationYear;
 
     @ISBN
     private String isbn;

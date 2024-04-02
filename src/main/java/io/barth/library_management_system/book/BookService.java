@@ -11,7 +11,7 @@ public interface BookService {
 
     public Book updateBook(Long id, Book book);
 
-    public Optional<Book> getBookById(Long id);
+    public Book getBookById(Long id);
 
     public void deleteBook(Long id);
 }

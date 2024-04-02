@@ -11,7 +11,7 @@ public interface PatronService {
 
     public Patron updatePatron(Long id, Patron patron);
 
-    public Optional<Patron> getPatronById(Long id);
+    public Patron getPatronById(Long id);
 
     public void deletePatron(Long id);
 }

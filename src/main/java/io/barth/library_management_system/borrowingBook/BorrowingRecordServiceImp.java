@@ -2,15 +2,20 @@ package io.barth.library_management_system.borrowingBook;
 
 import io.barth.library_management_system.book.Book;
 import io.barth.library_management_system.book.BookRepository;
+import io.barth.library_management_system.book.BookService;
 import io.barth.library_management_system.exception.EntityNotFoundException;
+import io.barth.library_management_system.exception.ForbiddenException;
 import io.barth.library_management_system.patron.Patron;
 import io.barth.library_management_system.patron.PatronRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 @Service
 public class BorrowingRecordServiceImp implements BorrowingRecordService{
+
+    private static final Logger logger = Logger.getLogger(BookService.class.getName());
 
     private final BorrowingRecordRepository borrowingRecordRepository;
 
@@ -37,6 +42,7 @@ public class BorrowingRecordServiceImp implements BorrowingRecordService{
         borrowingRecord.setPatron(patron);
         borrowingRecord.setBorrowedDate(LocalDateTime.now());
 
+        logger.info("Book borrowed successfully: " + borrowingRecord);
         borrowingRecordRepository.save(borrowingRecord);
     }
 
@@ -44,9 +50,11 @@ public class BorrowingRecordServiceImp implements BorrowingRecordService{
     public void returnBook(Long bookId, Long patronId) {
         BorrowingRecord borrowingRecord = borrowingRecordRepository
                 .findByBookIdAndPatronIdAndReturnDateIsNull(bookId, patronId)
-                .orElseThrow(() -> new EntityNotFoundException("No borrowing record found for bookId "
+                .orElseThrow(() -> new ForbiddenException("No borrowing record found for bookId "
                         + bookId + " patronId " + patronId));
         borrowingRecord.setReturnDate(LocalDateTime.now());
+
+        logger.info("Book with id " + bookId + " has been returned by patron with id " + patronId);
         borrowingRecordRepository.save(borrowingRecord);
     }
 }
