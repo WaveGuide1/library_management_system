@@ -1,5 +1,7 @@
 package io.barth.library_management_system.patron;
 
+import io.barth.library_management_system.exception.EntityNotFoundException;
+import io.barth.library_management_system.exception.InternalServerErrorException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,11 +38,16 @@ public class PatronController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Patron> getPatron(@PathVariable Long id){
+    public ResponseEntity<Patron> getPatronById(@PathVariable Long id) {
 
-        return patronServiceImp.getPatronById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+            Patron patron = patronServiceImp.getPatronById(id);
+            return new ResponseEntity<>(patron, HttpStatus.OK);
+        } catch (EntityNotFoundException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (InternalServerErrorException ex) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); }
+
     }
 
     @DeleteMapping("/{id}")
