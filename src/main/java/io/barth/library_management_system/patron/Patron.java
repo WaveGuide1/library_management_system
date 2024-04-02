@@ -1,33 +1,36 @@
-package io.barth.library_management_system.book;
+package io.barth.library_management_system.patron;
 
-import io.barth.library_management_system.utility.ISBN;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Data
 @Entity
-public class Book {
+public class Patron {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Book must have a title")
-    private String title;
+    @NotBlank(message = "First name is required")
+    private String firstName;
 
-    @NotBlank(message = "Book must have an Author")
-    private String author;
+    @NotBlank(message = "Last name is required")
+    private String lastName;
 
-    private int publicationYear;
+    @NotBlank(message = "Email name is required")
+    @Email(message = "Not a valid email address")
+    private String email;
 
-    @ISBN
-    private String isbn;
+    private String phone;
+
+    @NotBlank(message = "Address name is required")
+    private String address;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -36,5 +39,4 @@ public class Book {
     @LastModifiedDate
     @Column(insertable = false)
     private LocalDateTime lastModified;
-
 }
