@@ -1,11 +1,13 @@
 package io.barth.library_management_system.patron;
 
 import io.barth.library_management_system.exception.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class PatronServiceImp implements PatronService{
 
     private final PatronRepository patronRepository;
