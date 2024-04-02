@@ -31,8 +31,12 @@ public class BookController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book){
-        Book updatedBook = bookServiceImp.updateBook(id, book);
-        return new ResponseEntity<>(updatedBook, HttpStatus.CREATED);
+        try {
+            Book updatedBook = bookServiceImp.updateBook(id, book);
+            return new ResponseEntity<>(updatedBook, HttpStatus.CREATED);
+        } catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{id}")
@@ -50,7 +54,11 @@ public class BookController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id){
-        bookServiceImp.deleteBook(id);
-        return ResponseEntity.noContent().build();
+        try {
+            bookServiceImp.deleteBook(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
