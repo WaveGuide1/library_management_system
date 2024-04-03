@@ -33,8 +33,12 @@ public class PatronController {
     public ResponseEntity<Patron> updatePatron(
             @PathVariable Long id, @RequestBody Patron patron
     ){
-        Patron updatedPatron = patronServiceImp.updatePatron(id, patron);
-        return new ResponseEntity<>(updatedPatron, HttpStatus.CREATED);
+        try {
+            Patron updatedPatron = patronServiceImp.updatePatron(id, patron);
+            return new ResponseEntity<>(updatedPatron, HttpStatus.CREATED);
+        } catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{id}")
@@ -52,7 +56,11 @@ public class PatronController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePatron(@PathVariable Long id){
-        patronServiceImp.deletePatron(id);
-        return ResponseEntity.noContent().build();
+        try {
+            patronServiceImp.deletePatron(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException ex){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
