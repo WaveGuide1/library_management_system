@@ -2,11 +2,15 @@ package io.barth.library_management_system.authentication;
 
 import io.barth.library_management_system.utility.Role;
 import jakarta.persistence.*;
+import lombok.Data;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
+@Data
+@Entity
+@Table(name = "\"user\"")
 public class User implements UserDetails {
 
     @Id
@@ -19,7 +23,7 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "password")
@@ -31,16 +35,6 @@ public class User implements UserDetails {
     @Override
     public List<SimpleGrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
     }
 
     @Override
