@@ -20,13 +20,21 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<List<Book>> getBooks(){
-        return new ResponseEntity<>(bookServiceImp.getAllBook(), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(bookServiceImp.getAllBook(), HttpStatus.OK);
+        } catch (InternalServerErrorException ex){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping
     public ResponseEntity<Book> saveBook(@RequestBody Book book){
-        Book newBook = bookServiceImp.createBook(book);
-        return new ResponseEntity<>(newBook, HttpStatus.CREATED);
+        try {
+            Book newBook = bookServiceImp.createBook(book);
+            return new ResponseEntity<>(newBook, HttpStatus.CREATED);
+        } catch (InternalServerErrorException ex){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/{id}")
@@ -47,9 +55,7 @@ public class BookController {
         } catch (EntityNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (InternalServerErrorException ex) {
-
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); }
-
     }
 
     @DeleteMapping("/{id}")
