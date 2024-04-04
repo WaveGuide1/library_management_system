@@ -34,7 +34,7 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(value = EnumType.STRING)
-    private Role role;
+    private Role role = Role.valueOf("USER");
 
     @Override
     public List<SimpleGrantedAuthority> getAuthorities() {

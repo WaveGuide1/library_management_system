@@ -10,6 +10,8 @@ import io.barth.library_management_system.patron.PatronRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -36,6 +38,12 @@ public class BorrowingRecordServiceImp implements BorrowingRecordService{
 
         Patron patron = patronRepository.findById(patronId)
                 .orElseThrow(() -> new EntityNotFoundException("No patron with id " + patronId));
+        List<BorrowingRecord> books = borrowingRecordRepository.findAll();
+        if(!books.isEmpty()){
+            borrowingRecordRepository
+                    .findByBookIdAndPatronIdAndReturnDateIsNotNull(bookId, patronId)
+                    .orElseThrow(() -> new ForbiddenException("This book was borrowed and has not been returned by the same patron"));
+        }
 
         BorrowingRecord borrowingRecord = new BorrowingRecord();
         borrowingRecord.setBook(book);

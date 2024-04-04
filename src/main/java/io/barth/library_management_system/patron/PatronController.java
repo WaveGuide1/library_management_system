@@ -20,13 +20,21 @@ public class PatronController {
 
     @GetMapping
     public ResponseEntity<List<Patron>> getPatrons(){
-        return new ResponseEntity<>(patronServiceImp.getAllPatron(), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(patronServiceImp.getAllPatron(), HttpStatus.OK);
+        } catch (InternalServerErrorException ex){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping
     public ResponseEntity<Patron> addPatron(@RequestBody Patron patron){
-        Patron newPatron = patronServiceImp.createPatron(patron);
-        return new ResponseEntity<>(newPatron, HttpStatus.CREATED);
+        try {
+            Patron newPatron = patronServiceImp.createPatron(patron);
+            return new ResponseEntity<>(newPatron, HttpStatus.CREATED);
+        } catch (InternalServerErrorException ex){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PutMapping("/{id}")
