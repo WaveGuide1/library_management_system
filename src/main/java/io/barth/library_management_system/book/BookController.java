@@ -18,6 +18,7 @@ public class BookController {
         this.bookServiceImp = bookServiceImp;
     }
 
+    // Get all book
     @GetMapping
     public ResponseEntity<List<Book>> getBooks(){
         try {
@@ -27,6 +28,7 @@ public class BookController {
         }
     }
 
+    // Save a book
     @PostMapping
     public ResponseEntity<Book> saveBook(@RequestBody Book book){
         try {
@@ -37,6 +39,7 @@ public class BookController {
         }
     }
 
+    // Update a book
     @PutMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book){
         try {
@@ -47,6 +50,7 @@ public class BookController {
         }
     }
 
+    // Get a book by ID
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable Long id) {
 
@@ -58,6 +62,7 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); }
     }
 
+    // Delete a book
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id){
         try {

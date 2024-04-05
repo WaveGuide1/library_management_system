@@ -31,6 +31,7 @@ public class BorrowingRecordServiceImp implements BorrowingRecordService{
         this.patronRepository = patronRepository;
     }
 
+    // borrow book
     @Override
     public void borrowBook(Long bookId, Long patronId) {
         Book book = bookRepository.findById(bookId)
@@ -54,6 +55,7 @@ public class BorrowingRecordServiceImp implements BorrowingRecordService{
         borrowingRecordRepository.save(borrowingRecord);
     }
 
+    // Returned borrowed book
     @Override
     public void returnBook(Long bookId, Long patronId) {
         BorrowingRecord borrowingRecord = borrowingRecordRepository
