@@ -21,12 +21,14 @@ public class PatronServiceImp implements PatronService{
         this.patronRepository = patronRepository;
     }
 
+    // Get all patrons
     @Override
     public List<Patron> getAllPatron() {
 
         return patronRepository.findAll();
     }
 
+    // Add a patrons
     @Override
     public Patron createPatron(Patron patron) {
         if (patron.getFirstName() == null || patron.getLastName() == null ||
@@ -38,6 +40,7 @@ public class PatronServiceImp implements PatronService{
         return patronRepository.save(patron);
     }
 
+    // Update a patron
     @Override
     public Patron updatePatron(Long id, Patron patron) {
         if(!patronRepository.existsById(id)){
@@ -49,6 +52,7 @@ public class PatronServiceImp implements PatronService{
         return patronRepository.save(patron);
     }
 
+    // Get patron by ID
     @Override
     public Patron getPatronById(Long id) {
 
@@ -61,6 +65,7 @@ public class PatronServiceImp implements PatronService{
         return patron;
 }
 
+    // Delete a patrons
     @Override
     public void deletePatron(Long id) {
         if(!patronRepository.existsById(id)){

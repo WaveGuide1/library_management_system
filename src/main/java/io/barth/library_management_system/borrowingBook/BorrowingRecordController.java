@@ -13,12 +13,14 @@ public class BorrowingRecordController {
         this.borrowingRecordServiceImp = borrowingRecordServiceImp;
     }
 
+    // Borrow book
     @PostMapping("/borrow/{bookId}/patron/{patronId}")
     public ResponseEntity<String> borrowBook(@PathVariable Long bookId, @PathVariable Long patronId){
         borrowingRecordServiceImp.borrowBook(bookId, patronId);
         return ResponseEntity.ok("Book borrowed successfully");
     }
 
+    // Return borrowed book
     @PutMapping("/return/{bookId}/patron/{patronId}")
     public ResponseEntity<String> returnBook(@PathVariable Long bookId, @PathVariable Long patronId){
         borrowingRecordServiceImp.returnBook(bookId, patronId);

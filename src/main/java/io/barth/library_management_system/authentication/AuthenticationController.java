@@ -20,12 +20,14 @@ public class AuthenticationController {
         this.userAuthenticationService = userAuthenticationService;
     }
 
+    // Registration endpoint
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody User request){
         logger.info("Received registration request from {} ", request.getUsername());
         return ResponseEntity.ok(userAuthenticationService.register(request));
     }
 
+    // Login endpoint
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login (@RequestBody User request){
         logger.info("Received login request from {} ", request.getUsername());

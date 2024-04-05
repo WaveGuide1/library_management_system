@@ -18,6 +18,7 @@ public class PatronController {
         this.patronServiceImp = patronServiceImp;
     }
 
+    // Get all patrons
     @GetMapping
     public ResponseEntity<List<Patron>> getPatrons(){
         try {
@@ -27,6 +28,7 @@ public class PatronController {
         }
     }
 
+    // Save a patron
     @PostMapping
     public ResponseEntity<Patron> addPatron(@RequestBody Patron patron){
         try {
@@ -37,6 +39,7 @@ public class PatronController {
         }
     }
 
+    // Update patron info
     @PutMapping("/{id}")
     public ResponseEntity<Patron> updatePatron(
             @PathVariable Long id, @RequestBody Patron patron
@@ -49,6 +52,7 @@ public class PatronController {
         }
     }
 
+    // Get patron by ID
     @GetMapping("/{id}")
     public ResponseEntity<Patron> getPatronById(@PathVariable Long id) {
 
@@ -62,6 +66,7 @@ public class PatronController {
 
     }
 
+    // Delete a patron
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePatron(@PathVariable Long id){
         try {

@@ -21,11 +21,13 @@ public class BookServiceImp implements BookService{
         this.bookRepository = bookRepository;
     }
 
+    // Get all books
     @Override
     public List<Book> getAllBook() {
         return bookRepository.findAll();
     }
 
+    // Save a book
     @Override
     public Book createBook(Book book) {
         if (book.getTitle() == null || book.getAuthor() == null ||
@@ -37,6 +39,7 @@ public class BookServiceImp implements BookService{
         return bookRepository.save(book);
     }
 
+    // Update a book
     @Override
     public Book updateBook(Long id, Book book) {
         if(!bookRepository.existsById(id)){
@@ -48,6 +51,7 @@ public class BookServiceImp implements BookService{
         return bookRepository.save(book);
     }
 
+    // Get a book by ID
     @Override
     public Book getBookById(Long id) {
         logger.info("Getting book by id: " + id);
@@ -58,6 +62,7 @@ public class BookServiceImp implements BookService{
         return book;
     }
 
+    // Delete a book
     @Override
     public void deleteBook(Long id) {
         if(!bookRepository.existsById(id)){
