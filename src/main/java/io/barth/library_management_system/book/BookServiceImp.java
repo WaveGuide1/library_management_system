@@ -2,20 +2,23 @@ package io.barth.library_management_system.book;
 
 import io.barth.library_management_system.exception.BadRequestException;
 import io.barth.library_management_system.exception.EntityNotFoundException;
+import io.barth.library_management_system.exception.ForbiddenException;
 import io.barth.library_management_system.exception.InternalServerErrorException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
+@Transactional
 public class BookServiceImp implements BookService{
 
     private static final Logger logger = Logger.getLogger(BookService.class.getName());
 
     private final BookRepository bookRepository;
+
 
     public BookServiceImp(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
@@ -29,7 +32,9 @@ public class BookServiceImp implements BookService{
 
     // Save a book
     @Override
+    @Transactional
     public Book createBook(Book book) {
+
         if (book.getTitle() == null || book.getAuthor() == null ||
                 book.getPublicationYear() == null || book.getIsbn() == null) {
             throw new BadRequestException("Title, author, publication year, and ISBN are required for creating a book");
