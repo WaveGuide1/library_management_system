@@ -3,6 +3,7 @@ package io.barth.library_management_system.patron;
 import io.barth.library_management_system.exception.BadRequestException;
 import io.barth.library_management_system.exception.EntityNotFoundException;
 import io.barth.library_management_system.exception.InternalServerErrorException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
+@Transactional
 public class PatronServiceImp implements PatronService{
 
     private static final Logger logger = Logger.getLogger(PatronService.class.getName());

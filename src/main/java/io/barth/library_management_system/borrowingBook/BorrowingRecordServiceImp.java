@@ -7,6 +7,7 @@ import io.barth.library_management_system.exception.EntityNotFoundException;
 import io.barth.library_management_system.exception.ForbiddenException;
 import io.barth.library_management_system.patron.Patron;
 import io.barth.library_management_system.patron.PatronRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
+@Transactional
 public class BorrowingRecordServiceImp implements BorrowingRecordService{
 
     private static final Logger logger = Logger.getLogger(BookService.class.getName());
