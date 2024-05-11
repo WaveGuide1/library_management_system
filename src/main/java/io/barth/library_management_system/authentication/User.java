@@ -2,6 +2,7 @@ package io.barth.library_management_system.authentication;
 
 import io.barth.library_management_system.utility.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,16 +22,16 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_name")
+    @NotBlank(message = "First name is required")
     private String firstName;
 
-    @Column(name = "last_name")
+    @NotBlank(message = "Last name is required")
     private String lastName;
 
-    @Column(name = "username", unique = true)
+    @NotBlank(message = "Username name is required")
     private String username;
 
-    @Column(name = "password")
+    @NotBlank(message = "Password name is required")
     private String password;
 
     @Enumerated(value = EnumType.STRING)

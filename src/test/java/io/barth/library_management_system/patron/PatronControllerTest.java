@@ -1,6 +1,6 @@
 package io.barth.library_management_system.patron;
 
-import io.barth.library_management_system.exception.EntityNotFoundException;
+import io.barth.library_management_system.exception.RecordNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -57,7 +57,7 @@ public class PatronControllerTest {
         // Mock data
         Long patronId = 1L;
         when(patronServiceImp.getPatronById(patronId))
-                .thenThrow(new EntityNotFoundException("Patron not found"));
+                .thenThrow(new RecordNotFoundException("Patron not found"));
         // Test
         ResponseEntity<Patron> response = patronController.getPatronById(patronId);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -90,7 +90,7 @@ public class PatronControllerTest {
         Long patronId = 1L;
         Patron updatedPatron = new Patron(1L, "Update", "Foo", "john@example.com", "1234567890", "54 Okpanam", null, null);
         when(patronServiceImp.updatePatron(patronId, updatedPatron))
-                .thenThrow(new EntityNotFoundException("Patron not found"));
+                .thenThrow(new RecordNotFoundException("Patron not found"));
         // Test
         ResponseEntity<Patron> response = patronController.updatePatron(patronId, updatedPatron);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -106,7 +106,7 @@ public class PatronControllerTest {
     } @Test public void testDeletePatron_NotFound() {
         // Mock data
         Long patronId = 1L;
-        doThrow(new EntityNotFoundException("Patron not found"))
+        doThrow(new RecordNotFoundException("Patron not found"))
                 .when(patronServiceImp).deletePatron(patronId);
         // Test
         ResponseEntity<Void> response = patronController.deletePatron(patronId);

@@ -1,15 +1,19 @@
 package io.barth.library_management_system.patron;
 
-import io.barth.library_management_system.exception.EntityNotFoundException;
-import io.barth.library_management_system.exception.InternalServerErrorException;
+import io.barth.library_management_system.exception.GeneralExceptionHandler;
+import io.barth.library_management_system.exception.RecordNotFoundException;
+import io.barth.library_management_system.exception.UserAlreadyRegisterException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/patrons")
+@Validated
 public class PatronController {
 
     private final PatronServiceImp patronServiceImp;
@@ -23,32 +27,36 @@ public class PatronController {
     public ResponseEntity<List<Patron>> getPatrons(){
         try {
             return new ResponseEntity<>(patronServiceImp.getAllPatron(), HttpStatus.OK);
-        } catch (InternalServerErrorException ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception ex){
+            throw new RecordNotFoundException("No available record");
         }
     }
 
     // Save a patron
     @PostMapping
-    public ResponseEntity<Patron> addPatron(@RequestBody Patron patron){
+    public ResponseEntity<Patron> addPatron(@Valid @RequestBody Patron patron){
         try {
             Patron newPatron = patronServiceImp.createPatron(patron);
             return new ResponseEntity<>(newPatron, HttpStatus.CREATED);
-        } catch (InternalServerErrorException ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (UserAlreadyRegisterException e){
+            throw e;
+        } catch (Exception e){
+            throw new GeneralExceptionHandler("Something went wrong");
         }
     }
 
     // Update patron info
     @PutMapping("/{id}")
     public ResponseEntity<Patron> updatePatron(
-            @PathVariable Long id, @RequestBody Patron patron
+            @Valid @PathVariable Long id, @RequestBody Patron patron
     ){
         try {
             Patron updatedPatron = patronServiceImp.updatePatron(id, patron);
             return new ResponseEntity<>(updatedPatron, HttpStatus.CREATED);
-        } catch (EntityNotFoundException ex){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (RecordNotFoundException ex){
+            throw ex;
+        } catch (Exception ex){
+            throw new GeneralExceptionHandler("Something went wrong");
         }
     }
 
@@ -59,10 +67,9 @@ public class PatronController {
         try {
             Patron patron = patronServiceImp.getPatronById(id);
             return new ResponseEntity<>(patron, HttpStatus.OK);
-        } catch (EntityNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (InternalServerErrorException ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); }
+        } catch (GeneralExceptionHandler ex) {
+            throw new GeneralExceptionHandler("Something went wrong");
+        }
 
     }
 
@@ -72,8 +79,10 @@ public class PatronController {
         try {
             patronServiceImp.deletePatron(id);
             return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException ex){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (RecordNotFoundException ex){
+            throw ex;
+        }catch (Exception ex){
+            throw new GeneralExceptionHandler("Something went wrong");
         }
     }
 }

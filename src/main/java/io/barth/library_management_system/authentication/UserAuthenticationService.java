@@ -1,5 +1,6 @@
 package io.barth.library_management_system.authentication;
 
+import io.barth.library_management_system.exception.UserAlreadyRegisterException;
 import io.barth.library_management_system.filter.JwtService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +27,11 @@ public class UserAuthenticationService {
     }
 
     public AuthenticationResponse register(User request){
+
+        boolean username = userRepository.findByUsername(request.getUsername()).isPresent();
+        if(username){
+            throw new UserAlreadyRegisterException("User already exist. Please login");
+        }
 
         User user = new User();
         user.setFirstName(request.getFirstName());
