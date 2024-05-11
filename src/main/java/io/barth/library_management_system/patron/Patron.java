@@ -28,8 +28,6 @@ public class Patron {
     private String lastName;
 
     @NotBlank(message = "Email name is required")
-    @Email(message = "Not a valid email address")
-    @Column(unique = true)
     private String email;
 
     private String phone;

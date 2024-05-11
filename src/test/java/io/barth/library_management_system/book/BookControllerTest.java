@@ -1,6 +1,5 @@
 package io.barth.library_management_system.book;
 
-import io.barth.library_management_system.exception.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

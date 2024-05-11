@@ -31,6 +31,7 @@ public class Book {
     private Integer publicationYear;
 
     @ISBN
+    @NotBlank(message = "ISBN is required")
     private String isbn;
 
     @CreatedDate
