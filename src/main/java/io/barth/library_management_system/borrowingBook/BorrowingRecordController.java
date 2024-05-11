@@ -1,6 +1,7 @@
 package io.barth.library_management_system.borrowingBook;
 
 import io.barth.library_management_system.exception.GeneralExceptionHandler;
+import io.barth.library_management_system.exception.PatronHaveBorrowedTheBookException;
 import io.barth.library_management_system.exception.RecordNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class BorrowingRecordController {
         try {
             borrowingRecordServiceImp.borrowBook(bookId, patronId);
             return ResponseEntity.ok("Book borrowed successfully");
-        } catch (RecordNotFoundException e){
+        } catch (RecordNotFoundException | PatronHaveBorrowedTheBookException e){
             throw e;
         } catch (Exception e){
             throw new GeneralExceptionHandler("Something went wrong");

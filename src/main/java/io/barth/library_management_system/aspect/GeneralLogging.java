@@ -16,6 +16,7 @@ public class GeneralLogging {
 
     @Pointcut("execution(* io.barth.library_management_system.book.*.*(..)) || " +
             "execution(* io.barth.library_management_system.patron.*.*(..)) || " +
+            "execution(* io.barth.library_management_system.exception.*.*(..)) || " +
             "execution(* io.barth.library_management_system.authentication.*.*(..)) || " +
             "execution(* io.barth.library_management_system.borrowingBook.*.*(..))")
     public void loggingPointcut(){}
@@ -38,6 +39,7 @@ public class GeneralLogging {
 
     @AfterThrowing(pointcut = "loggingPointcut()", throwing = "e")
     public void afterException(JoinPoint joinpoint, Exception e){
-        logger.info("After method {} :: ,was invoked from class {} :: ", e.getMessage(), e.getClass());
+        logger.info("After method {} : Exception message {}:  ,was invoked from class {} :: ",
+                joinpoint.getSignature(), e.getMessage(), e.getClass());
     }
 }

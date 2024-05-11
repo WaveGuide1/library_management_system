@@ -2,6 +2,7 @@ package io.barth.library_management_system.book;
 
 import io.barth.library_management_system.exception.RecordNotFoundException;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
