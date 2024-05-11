@@ -1,7 +1,11 @@
 package io.barth.library_management_system.patron;
 
+
 import io.barth.library_management_system.exception.RecordNotFoundException;
 import io.barth.library_management_system.exception.UserAlreadyRegisterException;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -10,6 +14,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 @Service
+@Transactional
 public class PatronServiceImp implements PatronService{
 
     private final PatronRepository patronRepository;

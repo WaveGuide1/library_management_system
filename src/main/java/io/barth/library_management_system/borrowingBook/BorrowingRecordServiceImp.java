@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Service
+@Transactional
 public class BorrowingRecordServiceImp implements BorrowingRecordService{
 
     private final BorrowingRecordRepository borrowingRecordRepository;

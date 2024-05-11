@@ -1,6 +1,7 @@
 package io.barth.library_management_system.book;
 
 import io.barth.library_management_system.exception.RecordNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -8,10 +9,12 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Service
+@Transactional
 public class BookServiceImp implements BookService{
 
 
     private final BookRepository bookRepository;
+
 
     public BookServiceImp(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
@@ -25,7 +28,9 @@ public class BookServiceImp implements BookService{
 
     // Save a book
     @Override
+    @Transactional
     public Book createBook(Book book) {
+
         book.setCreatedDate(LocalDateTime.now());
         return bookRepository.save(book);
     }

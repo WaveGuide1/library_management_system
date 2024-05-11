@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +24,7 @@ public class Book {
     @NotBlank(message = "Book must have a title")
     private String title;
 
-    @NotBlank(message = "Book must have an Author")
+    @NotBlank(message = "Book must have an author")
     private String author;
 
     private Integer publicationYear;
