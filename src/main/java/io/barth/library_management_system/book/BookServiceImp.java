@@ -3,6 +3,10 @@ package io.barth.library_management_system.book;
 import io.barth.library_management_system.exception.RecordNotFoundException;
 
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,6 +15,7 @@ import java.util.logging.Logger;
 
 @Service
 @Transactional
+@CacheConfig(cacheNames = "books")
 public class BookServiceImp implements BookService{
 
 
@@ -37,6 +42,7 @@ public class BookServiceImp implements BookService{
     }
 
     // Update a book
+    @CachePut(key = "#id")
     @Override
     public Book updateBook(Long id, Book book) {
         Book oldBook = bookRepository.findById(id) .orElseThrow(() ->  new RecordNotFoundException("Book not found with id: " + id));
@@ -48,12 +54,14 @@ public class BookServiceImp implements BookService{
     }
 
     // Get a book by ID
+    @Cacheable(key = "#id")
     @Override
     public Book getBookById(Long id) {
         return bookRepository.findById(id) .orElseThrow(() -> new RecordNotFoundException("Book not found with id: " + id));
     }
 
     // Delete a book
+    @CacheEvict(key = "#id")
     @Override
     public void deleteBook(Long id) {
         if(!bookRepository.existsById(id)){

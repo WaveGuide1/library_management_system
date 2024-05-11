@@ -6,6 +6,10 @@ import io.barth.library_management_system.exception.UserAlreadyRegisterException
 
 import jakarta.transaction.Transactional;
 
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +19,7 @@ import java.util.logging.Logger;
 
 @Service
 @Transactional
+@CacheConfig(cacheNames = "patrons")
 public class PatronServiceImp implements PatronService{
 
     private final PatronRepository patronRepository;
@@ -43,6 +48,7 @@ public class PatronServiceImp implements PatronService{
     }
 
     // Update a patron
+    @CachePut(key = "#id")
     @Override
     public Patron updatePatron(Long id, Patron patron) {
         if(!patronRepository.existsById(id)){
@@ -54,6 +60,7 @@ public class PatronServiceImp implements PatronService{
     }
 
     // Get patron by ID
+    @Cacheable(key = "#id")
     @Override
     public Patron getPatronById(Long id) {
 
@@ -63,6 +70,7 @@ public class PatronServiceImp implements PatronService{
 
     // Delete a patrons
     @Override
+    @CacheEvict(key = "#id")
     public void deletePatron(Long id) {
         if(!patronRepository.existsById(id)){
             throw new RecordNotFoundException("No patron with id " + id);
