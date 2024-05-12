@@ -4,10 +4,10 @@
 
 1. **User**
 2. **Books**
-3. **Patron**
+3. **Patrons**
 4. **Borrow Books**
 
-### A) Authentication & Authorization
+### A) Authentication
 
 #### 1) Register API
 - **Endpoint:** `POST /api/v1/auth/register`
