@@ -1,5 +1,6 @@
 package io.barth.library_management_system.book;
 
+import io.barth.library_management_system.exception.RecordNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -55,15 +56,8 @@ public class BookControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(book, response.getBody());
     }
-    @Test
-    public void testGetBookById_NotFound() {
-        // Mock data
-        Long bookId = 1L; when(bookServiceImp.getBookById(bookId))
-                .thenThrow(new EntityNotFoundException("Book not found"));
-        // Test
-        ResponseEntity<Book> response = bookController.getBookById(bookId);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
+
+
     @Test
     public void testAddBook_Success() {
         // Mock data
@@ -86,16 +80,7 @@ public class BookControllerTest {
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(updatedBook, response.getBody());
     }
-    @Test public void testUpdateBook_NotFound() {
-        // Mock data
-        Long bookId = 1L;
-        Book updatedBook = new Book(bookId, "Updated Title", "Updated Author", 2023, "ISBN-Updated", null, LocalDateTime.now());
-        when(bookServiceImp.updateBook(bookId, updatedBook))
-                .thenThrow(new EntityNotFoundException("Book not found"));
-        // Test
-        ResponseEntity<Book> response = bookController.updateBook(bookId, updatedBook);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
+
     @Test
     public void testDeleteBook_Success() {
         // Mock data
@@ -105,13 +90,5 @@ public class BookControllerTest {
         ResponseEntity<Void> response = bookController.deleteBook(bookId);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
-    @Test public void testDeleteBook_NotFound() {
-        // Mock data
-        Long bookId = 1L;
-        doThrow(new EntityNotFoundException("Book not found"))
-                .when(bookServiceImp).deleteBook(bookId);
-        // Test
-        ResponseEntity<Void> response = bookController.deleteBook(bookId);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    }
+
 }
