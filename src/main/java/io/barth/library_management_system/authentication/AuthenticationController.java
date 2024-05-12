@@ -1,5 +1,8 @@
 package io.barth.library_management_system.authentication;
 
+import io.barth.library_management_system.exception.AuthenticationFailedException;
+import io.barth.library_management_system.exception.UserAlreadyRegisterException;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +25,25 @@ public class AuthenticationController {
 
     // Registration endpoint
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody User request){
-        logger.info("Received registration request from {} ", request.getUsername());
-        return ResponseEntity.ok(userAuthenticationService.register(request));
+    public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody User request){
+        try {
+            return ResponseEntity.ok(userAuthenticationService.register(request));
+        } catch (UserAlreadyRegisterException e){
+            throw e;
+        }catch (Exception e){
+            throw new AuthenticationFailedException("Invalid credentials");
+        }
+
     }
 
     // Login endpoint
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login (@RequestBody User request){
-        logger.info("Received login request from {} ", request.getUsername());
-        return ResponseEntity.ok(userAuthenticationService.authenticate(request));
+        try {
+            return ResponseEntity.ok(userAuthenticationService.authenticate(request));
+        } catch (Exception e){
+            throw new AuthenticationFailedException("Invalid credentials");
+        }
+
     }
 }

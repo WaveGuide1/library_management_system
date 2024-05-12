@@ -1,9 +1,11 @@
 package io.barth.library_management_system.book;
 
-import io.barth.library_management_system.exception.EntityNotFoundException;
-import io.barth.library_management_system.exception.InternalServerErrorException;
+import io.barth.library_management_system.exception.GeneralExceptionHandler;
+import io.barth.library_management_system.exception.RecordNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,30 +25,32 @@ public class BookController {
     public ResponseEntity<List<Book>> getBooks(){
         try {
             return new ResponseEntity<>(bookServiceImp.getAllBook(), HttpStatus.OK);
-        } catch (InternalServerErrorException ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception ex){
+            throw  new GeneralExceptionHandler("Something went wrong");
         }
     }
 
     // Save a book
     @PostMapping
-    public ResponseEntity<Book> saveBook(@RequestBody Book book){
+    public ResponseEntity<Book> saveBook(@Valid @RequestBody Book book){
         try {
             Book newBook = bookServiceImp.createBook(book);
             return new ResponseEntity<>(newBook, HttpStatus.CREATED);
-        } catch (InternalServerErrorException ex){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception ex){
+            throw  new GeneralExceptionHandler("Something went wrong");
         }
     }
 
     // Update a book
     @PutMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book){
+    public ResponseEntity<Book> updateBook(@Valid @PathVariable Long id, @RequestBody Book book){
         try {
             Book updatedBook = bookServiceImp.updateBook(id, book);
             return new ResponseEntity<>(updatedBook, HttpStatus.CREATED);
-        } catch (EntityNotFoundException ex){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (RecordNotFoundException ex){
+            throw ex;
+        } catch (Exception ex){
+            throw  new GeneralExceptionHandler("Something went wrong");
         }
     }
 
@@ -56,10 +60,11 @@ public class BookController {
 
         try { Book book = bookServiceImp.getBookById(id);
             return new ResponseEntity<>(book, HttpStatus.OK);
-        } catch (EntityNotFoundException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (InternalServerErrorException ex) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); }
+        } catch (RecordNotFoundException ex){
+            throw ex;
+        } catch (Exception ex) {
+            throw  new GeneralExceptionHandler("Something went wrong");
+        }
     }
 
     // Delete a book
@@ -68,8 +73,10 @@ public class BookController {
         try {
             bookServiceImp.deleteBook(id);
             return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException ex){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (RecordNotFoundException ex){
+            throw ex;
+        } catch (Exception ex){
+            throw  new GeneralExceptionHandler("Something went wrong");
         }
     }
 }

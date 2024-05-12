@@ -1,5 +1,8 @@
 package io.barth.library_management_system.borrowingBook;
 
+import io.barth.library_management_system.exception.GeneralExceptionHandler;
+import io.barth.library_management_system.exception.PatronHaveBorrowedTheBookException;
+import io.barth.library_management_system.exception.RecordNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +19,27 @@ public class BorrowingRecordController {
     // Borrow book
     @PostMapping("/borrow/{bookId}/patron/{patronId}")
     public ResponseEntity<String> borrowBook(@PathVariable Long bookId, @PathVariable Long patronId){
-        borrowingRecordServiceImp.borrowBook(bookId, patronId);
-        return ResponseEntity.ok("Book borrowed successfully");
+        try {
+            borrowingRecordServiceImp.borrowBook(bookId, patronId);
+            return ResponseEntity.ok("Book borrowed successfully");
+        } catch (RecordNotFoundException | PatronHaveBorrowedTheBookException e){
+            throw e;
+        } catch (Exception e){
+            throw new GeneralExceptionHandler("Something went wrong");
+        }
+
     }
 
     // Return borrowed book
     @PutMapping("/return/{bookId}/patron/{patronId}")
     public ResponseEntity<String> returnBook(@PathVariable Long bookId, @PathVariable Long patronId){
-        borrowingRecordServiceImp.returnBook(bookId, patronId);
-        return ResponseEntity.ok("Book returned successfully");
+        try {
+            borrowingRecordServiceImp.returnBook(bookId, patronId);
+            return ResponseEntity.ok("Book returned successfully");
+        } catch (RecordNotFoundException e){
+            throw e;
+        } catch (Exception e){
+            throw new GeneralExceptionHandler("Something went wrong");
+        }
     }
 }
